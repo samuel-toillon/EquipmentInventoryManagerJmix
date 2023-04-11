@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="InventoryReturn">
+        <createTable tableName="BRAND">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_BRAND"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+            <column name="IMAGE" type="VARCHAR(1024)"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="InventoryReturn">
+        <createTable tableName="EQUIPMENT">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_EQUIPMENT"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+            <column name="IMAGE" type="VARCHAR(1024)"/>
+            <column name="MODEL_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="InventoryReturn">
+        <createTable tableName="GROUP_">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GROUP_"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+            <column name="ICON" type="VARCHAR(1024)"/>
+            <column name="GROUP_ID" type="UUID"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="4" author="InventoryReturn">
+        <createTable tableName="GROUP_TAGS_LINK">
+            <column name="GROUP_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GROUP_TAGS_LINK"/>
+            </column>
+            <column name="TAGS_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GROUP_TAGS_LINK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="5" author="InventoryReturn">
+        <createTable tableName="MODEL">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_MODEL"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+            <column name="IMAGE" type="VARCHAR(1024)"/>
+            <column name="GROUP_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="BRAND_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="6" author="InventoryReturn">
+        <createTable tableName="TAGS">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TAGS"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="7" author="InventoryReturn">
+        <createIndex indexName="IDX_EQUIPMENT_MODEL" tableName="EQUIPMENT">
+            <column name="MODEL_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="MODEL_ID" baseTableName="EQUIPMENT"
+                                 constraintName="FK_EQUIPMENT_ON_MODEL" referencedColumnNames="ID"
+                                 referencedTableName="MODEL"/>
+    </changeSet>
+    <changeSet id="8" author="InventoryReturn">
+        <createIndex indexName="IDX_GROUP__GROUP" tableName="GROUP_">
+            <column name="GROUP_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="GROUP_ID" baseTableName="GROUP_" constraintName="FK_GROUP__ON_GROUP"
+                                 referencedColumnNames="ID" referencedTableName="GROUP_"/>
+    </changeSet>
+    <changeSet id="9" author="InventoryReturn">
+        <createIndex indexName="IDX_MODEL_BRAND" tableName="MODEL">
+            <column name="BRAND_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="BRAND_ID" baseTableName="MODEL" constraintName="FK_MODEL_ON_BRAND"
+                                 referencedColumnNames="ID" referencedTableName="BRAND"/>
+    </changeSet>
+    <changeSet id="10" author="InventoryReturn">
+        <createIndex indexName="IDX_MODEL_GROUP" tableName="MODEL">
+            <column name="GROUP_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="GROUP_ID" baseTableName="MODEL" constraintName="FK_MODEL_ON_GROUP"
+                                 referencedColumnNames="ID" referencedTableName="GROUP_"/>
+    </changeSet>
+    <changeSet id="11" author="InventoryReturn">
+        <addForeignKeyConstraint baseColumnNames="GROUP_ID" baseTableName="GROUP_TAGS_LINK"
+                                 constraintName="FK_GROTAG_ON_GROUP" referencedColumnNames="ID"
+                                 referencedTableName="GROUP_"/>
+    </changeSet>
+    <changeSet id="12" author="InventoryReturn">
+        <addForeignKeyConstraint baseColumnNames="TAGS_ID" baseTableName="GROUP_TAGS_LINK"
+                                 constraintName="FK_GROTAG_ON_TAGS" referencedColumnNames="ID"
+                                 referencedTableName="TAGS"/>
+    </changeSet>
+</databaseChangeLog>

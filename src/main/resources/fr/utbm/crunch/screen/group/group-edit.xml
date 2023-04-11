@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://groupEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="groupDc"
+                  class="fr.utbm.crunch.entity.Group">
+            <fetchPlan extends="_base">
+                <property name="group" fetchPlan="_base"/>
+                <property name="tags" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="groupDl"/>
+        </instance>
+        <collection id="tagsDc" class="fr.utbm.crunch.entity.Tags">
+            <fetchPlan extends="_base"/>
+            <loader id="tagsDl">
+                <query>
+                    <![CDATA[select e from Tags e]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="groupsPickerDc" class="fr.utbm.crunch.entity.Group">
+            <fetchPlan extends="_base">
+                <property name="group" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="groupsPickerDl">
+                <query>
+                    <![CDATA[select e from Group_ e where e.name<>'groupe 2']]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="editActions">
+        <form id="form" dataContainer="groupDc">
+            <column width="350px">
+                <textField id="nameField" property="name"/>
+                <textField id="descriptionField" property="description"/>
+                <singleSelectList id="groupList" property="group" caption="msg://groupList.caption"/>
+                <!--<entityPicker id="groupField" property="group"/>-->
+                <tagPicker id="tagsPicker"
+                           property="tags"
+                           dataContainer="groupDc"
+                           optionsContainer="tagsDc">
+                    <actions>
+                        <action id="lookup" type="tag_lookup"/>
+                        <action id="clear" type="value_clear"/>
+                    </actions>
+                </tagPicker>
+            </column>
+            <column>
+                <fileStorageUpload id="iconField" property="icon"/>
+                <image id="iconImage" property="icon"
+                       scaleMode="CONTAIN"
+                       rowspan="10" caption=""
+                       height="200" width="200"
+                />
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>
