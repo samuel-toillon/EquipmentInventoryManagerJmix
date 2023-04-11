@@ -1,2 +1,2 @@
-# InventoryManagerJmix
-An Inventory Manager in Jmix
+# EquipmentInventoryManagerJmix
+An Equipment Inventory Manager in Jmix
